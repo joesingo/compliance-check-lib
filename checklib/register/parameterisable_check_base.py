@@ -1,4 +1,4 @@
-from compliance_checker.base import BaseCheck
+from compliance_checker.base import BaseCheck, Dataset
 from compliance_checker.base import Result
 from checklib.code.errors import FileError, ParameterError
 
@@ -11,6 +11,7 @@ class ParameterisableCheckBase(object):
     defaults = {}
     message_templates = []
     level = "HIGH"
+    supported_ds = [Dataset]
 
     def __init__(self, kwargs, messages=None, level="HIGH"):
         self.kwargs = self.defaults.copy()
