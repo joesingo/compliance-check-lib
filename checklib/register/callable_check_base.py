@@ -12,13 +12,12 @@ class CallableCheckBase(object):
     message_templates = []
     level = "HIGH"
 
-    def __init__(self, kwargs, messages=None, level="HIGH", vocabulary_ref=None):
+    def __init__(self, kwargs, messages=None, level="HIGH"):
         self.kwargs = self.defaults.copy()
         self.kwargs.update(kwargs)
         self._define_messages(messages)
         self.out_of = len(self.messages)
         self.level = getattr(BaseCheck, level)
-        self.vocabulary_ref = vocabulary_ref
 
         self._setup()
 
