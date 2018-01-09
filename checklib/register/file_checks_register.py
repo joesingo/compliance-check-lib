@@ -8,7 +8,7 @@ A register of checks at the file-level.
 
 import os, re
 
-from compliance_checker.base import Result
+from compliance_checker.base import Result, Dataset, GenericFile
 
 from .parameterisable_check_base import ParameterisableCheckBase
 
@@ -17,8 +17,10 @@ from checklib.code import file_util
 class FileCheckBase(ParameterisableCheckBase):
     "Base class for all File Checks (that work on a file path)."
 
+    supported_ds = [Dataset, GenericFile]
+
     def _check_primary_arg(self, primary_arg):
-        fpath = primary_arg.fpath
+        fpath = primary_arg.filepath()
         if not os.path.isfile(fpath):
             raise Exception("File not found: {}".format(fpath))
 
@@ -33,7 +35,7 @@ class FileSizeCheck(FileCheckBase):
     level = "HIGH"
 
     def _get_result(self, primary_arg):
-        fpath = primary_arg
+        fpath = primary_arg.filepath()
         threshold = float(self.kwargs["threshold"])
 
         success = file_util._is_file_size_less_than(fpath, threshold * (2.**30))
@@ -62,7 +64,7 @@ class FileNameStructureCheck(FileCheckBase):
     _ALLOWED_CHARACTERS = '[A-Za-z0-9\-\.]'
 
     def _get_result(self, primary_arg):
-        fpath = os.path.basename(primary_arg)
+        fpath = os.path.basename(primary_arg.filepath())
         self.kwargs["AC"] = self._ALLOWED_CHARACTERS
         regex = re.compile("{AC}+({delimiter}{AC}+)+\{extension}".format(**self.kwargs))
 

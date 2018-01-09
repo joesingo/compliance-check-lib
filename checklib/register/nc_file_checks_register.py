@@ -20,6 +20,8 @@ from checklib.code.errors import FileError, ParameterError
 class NCFileCheckBase(ParameterisableCheckBase):
     "Base class for all NetCDF4 File Checks (that work on a file path."
 
+    supported_ds = [Dataset]
+
     def _check_primary_arg(self, primary_arg):
         if not isinstance(primary_arg, Dataset):
             raise FileError("Object for testing is not a netCDF4 Dataset: {}".format(str(primary_arg)))
@@ -248,7 +250,7 @@ class ValidGlobalAttrsMatchFileNameCheck(NCFileCheckBase):
 
         return Result(self.level, (score, self.out_of),
                       self.get_short_name(), messages)
-                      
+
 
 class VariableExistsInFileCheck(NCFileCheckBase):
     """
@@ -266,7 +268,7 @@ class VariableExistsInFileCheck(NCFileCheckBase):
         score = 0
         if nc_util.is_variable_in_dataset(ds, self.kwargs["var_id"]):
             score = 1
-            
+
         messages = []
 
         if score < self.out_of:
@@ -274,8 +276,8 @@ class VariableExistsInFileCheck(NCFileCheckBase):
 
         return Result(self.level, (score, self.out_of),
                       self.get_short_name(), messages)
-                      
-                      
+
+
 class VariableRangeCheck(NCFileCheckBase):
     """
     The variable {var_id} must have values in the range {minimum}
@@ -299,8 +301,8 @@ class VariableRangeCheck(NCFileCheckBase):
             score = 1
 
         if nc_util.variable_is_within_valid_bounds(ds, var_id, mn, mx):
-            score += 1      
-            
+            score += 1
+
         messages = []
 
         if score < self.out_of:
