@@ -10,16 +10,17 @@ import os, re
 
 from compliance_checker.base import Result
 
-from .callable_check_base import CallableCheckBase
+from .parameterisable_check_base import ParameterisableCheckBase
 
 from checklib.code import file_util
 
-class FileCheckBase(CallableCheckBase):
-    "Base class for all File Checks (that work on a file path."
+class FileCheckBase(ParameterisableCheckBase):
+    "Base class for all File Checks (that work on a file path)."
 
     def _check_primary_arg(self, primary_arg):
-        if not os.path.isfile(primary_arg):
-            raise Exception("File not found: {}".format(primary_arg))
+        fpath = primary_arg.fpath
+        if not os.path.isfile(fpath):
+            raise Exception("File not found: {}".format(fpath))
 
 
 class FileSizeCheck(FileCheckBase):

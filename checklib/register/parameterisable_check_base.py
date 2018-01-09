@@ -3,7 +3,7 @@ from compliance_checker.base import Result
 from checklib.code.errors import FileError, ParameterError
 
 
-class CallableCheckBase(object):
+class ParameterisableCheckBase(object):
 
     # Define empty values for required arguments
     short_name = ""
@@ -59,7 +59,7 @@ class CallableCheckBase(object):
         #       and SUCCESS is silent.
         return self.messages
 
-    def __call__(self, primary_arg):
+    def do_check(self, primary_arg):
         """
         Calls the check with primary arg and keyword args provided during instantiation.
 
