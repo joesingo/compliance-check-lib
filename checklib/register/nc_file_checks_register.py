@@ -11,13 +11,13 @@ from netCDF4 import Dataset
 
 from compliance_checker.base import Result
 
-from .callable_check_base import CallableCheckBase
+from .parameterisable_check_base import ParameterisableCheckBase
 from checklib.code import nc_util
 from checklib.cvs.ess_vocabs import ESSVocabs
 from checklib.code.errors import FileError, ParameterError
 
 
-class NCFileCheckBase(CallableCheckBase):
+class NCFileCheckBase(ParameterisableCheckBase):
     "Base class for all NetCDF4 File Checks (that work on a file path."
 
     def _check_primary_arg(self, primary_arg):
