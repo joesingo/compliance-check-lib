@@ -1,5 +1,4 @@
-from compliance_checker.base import BaseCheck, Dataset
-from compliance_checker.base import Result
+from compliance_checker.base import BaseCheck, Dataset, Result
 from checklib.code.errors import FileError, ParameterError
 
 
@@ -7,7 +6,6 @@ class ParameterisableCheckBase(object):
 
     # Define empty values for required arguments
     short_name = ""
-    primary_arg_type = None
     defaults = {}
     message_templates = []
     level = "HIGH"
