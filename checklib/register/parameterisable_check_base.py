@@ -11,12 +11,12 @@ class ParameterisableCheckBase(object):
     level = "HIGH"
     supported_ds = [Dataset]
 
-    def __init__(self, kwargs, messages=None, level="HIGH"):
+    def __init__(self, kwargs, messages=None, level=None):
         self.kwargs = self.defaults.copy()
         self.kwargs.update(kwargs)
         self._define_messages(messages)
         self.out_of = len(self.messages)
-        self.level = getattr(BaseCheck, level)
+        self.level = getattr(BaseCheck, level or self.level or "HIGH")
 
         self._setup()
 
