@@ -101,4 +101,8 @@ class ParameterisableCheckBase(object):
         raise NotImplementedError
 
     def _check_primary_arg(self, primary_arg):
-        raise NotImplementedError
+        """
+        Child classes can override this to validate arguments before running
+        the check
+        """
+        pass
