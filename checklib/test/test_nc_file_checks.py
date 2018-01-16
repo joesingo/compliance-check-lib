@@ -13,27 +13,6 @@ from checklib.code.errors import ParameterError
 from checklib.register.nc_file_checks_register import *
 
 
-def test_required_args_argument_fail_1():
-    req_args = ['attribute', 'regex']
-    try:
-        GlobalAttrRegexCheck(kwargs={})
-    except Exception as ex:
-        assert(type(ex) == ParameterError), 'Expecting ParameterError, but got {}'.format(type(ex))
-        assert(str(ex) == "Keyword arguments for 'GlobalAttrRegexCheck' must contain: {}.".format(str(req_args)))
-    else:
-        assert(False), "Expecting ParameterError, but no exception raised"
-
-def test_required_args_argument_fail_2():
-    req_args = ['attribute', 'regex']
-    try:
-        GlobalAttrRegexCheck(kwargs={'attribute': 'test'})
-    except Exception as ex:
-        assert(type(ex) == ParameterError), 'Expecting ParameterError, but got {}'.format(type(ex))
-        assert(str(ex) == "Keyword arguments for 'GlobalAttrRegexCheck' must contain: ['regex'].")
-    else:
-        assert(False), "Expecting ParameterError, but no exception raised"
-
-
 def test_GlobalAttrRegexCheck_success_1():
     x = GlobalAttrRegexCheck(kwargs={"attribute": "Conventions", "regex": "CF-\d+\.\d+"})
     resp = x.do_check(Dataset('checklib/test/example_data/nc_file_checks_data/simple_nc.nc'))

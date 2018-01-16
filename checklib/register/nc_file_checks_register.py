@@ -14,7 +14,7 @@ from compliance_checker.base import Result
 from .parameterisable_check_base import ParameterisableCheckBase
 from checklib.code import nc_util
 from checklib.cvs.ess_vocabs import ESSVocabs
-from checklib.code.errors import FileError, ParameterError
+from checklib.code.errors import FileError
 
 
 class NCFileCheckBase(ParameterisableCheckBase):
@@ -33,10 +33,10 @@ class GlobalAttrRegexCheck(NCFileCheckBase):
     """
     short_name = "Global attribute: {attribute}"
     defaults = {}
-    required_args = ['attribute', 'regex']
     message_templates = ["Required '{attribute}' global attribute is not present.",
                          "Required '{attribute}' global attribute value is invalid."]
     level = "HIGH"
+    required_parameters = {"attribute": str, "regex": str}
 
     def _setup(self):
         "Modifies regex to include backslashes - required to work."
@@ -61,11 +61,10 @@ class GlobalAttrVocabCheck(NCFileCheckBase):
     """
     short_name = "Global attribute: {attribute}"
     defaults = {"vocab_lookup": "canonical_name"}
-    required_args = ['attribute']
     message_templates = ["Required '{attribute}' global attribute is not present.",
                          "Required '{attribute}' global attribute value is invalid."]
     level = "HIGH"
-
+    required_parameters = {"attribute": str}
 
     def _get_result(self, primary_arg):
         ds = primary_arg
@@ -113,7 +112,7 @@ class MainVariableAttributeCheck(NCFileCheckBase):
     """
     short_name = "Main variable attribute"
     defaults = {}
-    required_args = ["attr_name", "attr_value"]
+    required_parameters = {"attr_name": str, "attr_value": str}
     message_templates = ["Cannot identify main variable to examine attributes",
                          "Required variable attribute '{attr_name}' is not present for variable: '{attr_value}'.",
                          "Required variable attribute '{attr_name}' has incorrect value '{attr_value}' for main "
@@ -174,10 +173,10 @@ class ValidGlobalAttrsMatchFileNameCheck(NCFileCheckBase):
     """
     short_name = "Global attributes match file name/vocab"
     defaults = {"delimiter": "_", "extension": ".nc", "ignore_attr_checks": None}
-    required_args = ["order"]
     message_templates = ["File name does not match global attributes.",
                          "Each global attribute is checked separately."]
     level = "HIGH"
+    required_parameters = {"order": str}
 
     def _setup(self):
         """
@@ -210,7 +209,7 @@ class ValidGlobalAttrsMatchFileNameCheck(NCFileCheckBase):
             for ignore in self.kwargs["ignore_attr_checks"]:
 
                 if ignore not in self.kwargs["order"]:
-                    raise ParameterError("Invalid arguments: requested to ignore attribute " 
+                    raise ParameterError("Invalid arguments: requested to ignore attribute "
                                          "not provided in 'order': {}.".format(ignore))
                 # Decrement `out_of` because we won't check this attribute
                 self.out_of -= 2
@@ -260,7 +259,7 @@ class VariableExistsInFileCheck(NCFileCheckBase):
     defaults = {}
     message_templates = ["Required variable {var_id} is not present."]
     level = "HIGH"
-
+    required_parameters = {"var_id": str}
 
     def _get_result(self, primary_arg):
         ds = primary_arg
@@ -289,7 +288,7 @@ class VariableRangeCheck(NCFileCheckBase):
                          "Variable {var_id} has values outside the permitted range: "
                          "{minimum} to {maximum}"]
     level = "HIGH"
-
+    required_parameters = {"var_id": str, "minimum": float, "maximum": float}
 
     def _get_result(self, primary_arg):
         ds = primary_arg
@@ -319,7 +318,6 @@ class _VariableTypeCheckBase(NCFileCheckBase):
     defaults = {}
     level = "HIGH"
 
-
     def _package_result(self, success):
         "Package up result depending on success (boolean)."
         messages = []
@@ -340,7 +338,7 @@ class VariableTypeCheck(_VariableTypeCheckBase):
     """
     short_name = "Variable data type: {var_id}"
     message_templates = ["The variable {var_id} was not of the required type: {dtype}"]
-    required_args = ["var_id", "dtype"]
+    required_parameters = {"var_id": str, "dtype": str}
 
     def _get_result(self, primary_arg):
         ds = primary_arg
@@ -354,8 +352,7 @@ class MainVariableTypeCheck(_VariableTypeCheckBase):
     """
     short_name = "Main variable data type"
     message_templates = ["Main variable was not of the required type: {dtype}"]
-    required_args = ["dtype"]
-
+    required_parameters = {"dtype": str}
 
     def _get_result(self, primary_arg):
         ds = primary_arg
@@ -368,6 +365,12 @@ class _NCVariableMetadataCheckBase(NCFileCheckBase):
     Base class for checking metadata (attributes) of netCDF4 Variables by
     looking up expected values in controlled vocabulary specified.
     """
+    short_name = "Variable metadata: {var_id}"
+    defaults = {}
+    message_templates = ["Variable '{var_id}' not found in the file so cannot perform other checks.",
+                         "Each variable attribute is checked separately."]
+    level = "HIGH"
+    required_parameters = {"var_id": str}
 
     def _get_var_id(self, ds):
         raise NotImplementedError
@@ -437,7 +440,7 @@ class NCVariableMetadataCheck(_NCVariableMetadataCheckBase):
     """
     short_name = "Variable metadata: {var_id}"
     defaults = {"ignores": None}
-    required_args = ["var_id", "pyessv_namespace"]
+    required_parameters = {"var_id": str, "pyessv_namespace": str}
     message_templates = ["Variable '{var_id}' not found in the file so cannot perform other checks.",
                          "Each variable attribute is checked separately."]
 
@@ -460,7 +463,7 @@ class NCMainVariableMetadataCheck(_NCVariableMetadataCheckBase):
     """
     short_name = "Main variable metadata"
     defaults = {"ignores": None}
-    required_args = ("pyessv_namespace",)
+    required_parameters = {"pyessv_namespace": str}
     message_templates = ["Main variable not found in the file so cannot perform other checks.",
                          "Each variable attribute is checked separately."]
     level = "HIGH"
@@ -488,11 +491,9 @@ class NetCDFFormatCheck(NCFileCheckBase):
     """
     short_name = "NetCDF sub-format: {format}"
     defaults = {}
-    required_args = ["format"]
     message_templates = ["The NetCDF sub-format must be: {format}."]
-
     level = "HIGH"
-
+    required_parameters = {"format": str}
 
     def _get_result(self, primary_arg):
         ds = primary_arg
@@ -517,7 +518,7 @@ class NetCDFDimensionCheck(NCFileCheckBase):
     """
     short_name = "NetCDF dimension: {dim_id}"
     defaults = {}
-    required_args = ["dim_id", "pyessv_namespace"]
+    required_parameters = {"dim_id": str, "pyessv_namespace": str}
     message_templates = ["Dimension not found: {dim_id}.",
                          "Dimension '{dim_id}' does not have required length",
                          "Coordinate variable for dimension not found: {dim_id}.",

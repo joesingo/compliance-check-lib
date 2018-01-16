@@ -33,6 +33,7 @@ class FileSizeCheck(FileCheckBase):
     defaults = {"threshold": 2, "strictness": "hard"}
     message_templates = ["Data file exceeds {strictness} limit of {threshold}Gbytes in size."]
     level = "HIGH"
+    required_parameters = {"threshold": float, "strictness": str}
 
     def _get_result(self, primary_arg):
         fpath = primary_arg.filepath()
@@ -62,6 +63,7 @@ class FileNameStructureCheck(FileCheckBase):
         "File name does not follow required format of '{delimiter}' delimiters and '{extension}' extension."]
     level = "HIGH"
     _ALLOWED_CHARACTERS = '[A-Za-z0-9\-\.]'
+    required_parameters = {"delimiter": str, "extension": str}
 
     def _get_result(self, primary_arg):
         fpath = os.path.basename(primary_arg.filepath())

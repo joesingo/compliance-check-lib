@@ -23,7 +23,7 @@ class NCCoordVarHasBoundsCheck(NCFileCheckBase):
     """
     short_name = "Coord Var has bounds: {var_id}"
     defaults = {}
-    required_args = ["var_id"]
+    required_parameters = {"var_id": str}
     message_templates = ["Variable '{var_id}' not found in the file so cannot perform other checks.",
                          "A valid 'bounds' variable does not exist for variable '{var_id}'."]
     level = "HIGH"
@@ -62,7 +62,7 @@ class NCCoordVarHasValuesInVocabCheck(NCFileCheckBase):
     """
     short_name = "Coord Var has expected values: {var_id}"
     defaults = {}
-    required_args = ["var_id"]
+    required_parameters = {"var_id": str}
     message_templates = ["Variable '{var_id}' not found in the file so cannot perform other checks.",
                          "Values for variable '{var_id}' do not match those specified in controlled vocabulary."]
     level = "HIGH"
@@ -108,7 +108,7 @@ class NCCoordVarHasLengthInVocabCheck(NCFileCheckBase):
     """
     short_name = "Coord Var has expected length: {var_id}"
     defaults = {}
-    required_args = ["var_id"]
+    required_parameters = {"var_id": str}
     message_templates = ["Variable '{var_id}' not found in the file so cannot perform other checks.",
                          "Length of variable '{var_id}' does not match that specified in controlled vocabulary."]
     level = "HIGH"
