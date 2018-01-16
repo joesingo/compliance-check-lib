@@ -14,7 +14,7 @@ from compliance_checker.base import Result
 from .parameterisable_check_base import ParameterisableCheckBase
 from checklib.code import nc_util
 from checklib.cvs.ess_vocabs import ESSVocabs
-from checklib.code.errors import FileError, ParameterError
+from checklib.code.errors import FileError
 
 
 class NCFileCheckBase(ParameterisableCheckBase):
@@ -36,12 +36,10 @@ class GlobalAttrRegexCheck(NCFileCheckBase):
     message_templates = ["Required '{attribute}' global attribute is not present.",
                          "Required '{attribute}' global attribute value is invalid."]
     level = "HIGH"
+    required_parameters = {"attribute": str, "regex": str}
 
     def _setup(self):
-        "Checks that both args are provided and fixes double-escape in regex string"
-        if "attribute" not in self.kwargs or "regex" not in self.kwargs:
-            raise ParameterError("Keyword arguments for Global Attribute Regex Check must include ('attribute', 'regex').")
-
+        "Fixes double-escape in regex string"
         self.kwargs["regex"] = self.kwargs["regex"].replace("\\\\", "\\")
 
     def _get_result(self, primary_arg):
@@ -66,12 +64,7 @@ class GlobalAttrVocabCheck(NCFileCheckBase):
     message_templates = ["Required '{attribute}' global attribute is not present.",
                          "Required '{attribute}' global attribute value is invalid."]
     level = "HIGH"
-
-    def _setup(self):
-        "Checks that required args are provided"
-        if "attribute" not in self.kwargs:
-            raise ParameterError("Keyword arguments for Global Attribute Vocab Check must include ('attribute').")
-
+    required_parameters = {"attribute": str}
 
     def _get_result(self, primary_arg):
         ds = primary_arg
@@ -125,6 +118,7 @@ class ValidGlobalAttrsMatchFileNameCheck(NCFileCheckBase):
     message_templates = ["File name does not match global attributes.",
                          "Each global attribute is checked separately."]
     level = "HIGH"
+    required_parameters = {"delimiter": str, "extension": str, "order": str}
 
     def _setup(self):
         """
@@ -139,15 +133,6 @@ class ValidGlobalAttrsMatchFileNameCheck(NCFileCheckBase):
         components of the file name against. Regex should start with
         'regex:' followed by the regex.
         """
-        not_found = []
-        for key in ("delimiter", "extension", "order"):
-            if key not in self.kwargs:
-                not_found.append(key)
-
-        if not_found:
-            raise ParameterError("Keyword arguments for Global Attrs Match File "
-                            "Name Check must include: {}.".format(not_found))
-
         self.kwargs["order"] = self.kwargs["order"].split("~")
         self.out_of = 0
         for order in self.kwargs["order"]:
@@ -199,7 +184,7 @@ class VariableExistsInFileCheck(NCFileCheckBase):
     defaults = {}
     message_templates = ["Required variable {var_id} is not present."]
     level = "HIGH"
-
+    required_parameters = {"var_id": str}
 
     def _get_result(self, primary_arg):
         ds = primary_arg
@@ -228,7 +213,7 @@ class VariableRangeCheck(NCFileCheckBase):
                          "Variable {var_id} has values outside the permitted range: "
                          "{minimum} to {maximum}"]
     level = "HIGH"
-
+    required_parameters = {"var_id": str, "minimum": float, "maximum": float}
 
     def _get_result(self, primary_arg):
         ds = primary_arg
@@ -258,13 +243,6 @@ class _VariableTypeCheckBase(NCFileCheckBase):
     defaults = {}
     level = "HIGH"
 
-    def _check_kwargs(self, req_args):
-        "Checks required keyword args are present."
-
-        for kwarg in req_args:
-            if kwarg not in self.kwargs:
-                raise ParameterError("Keyword arguments for Variable Type Check must include ('{0}').".format(kwarg))
-
     def _package_result(self, success):
         "Package up result depending on success (boolean)."
         messages = []
@@ -285,11 +263,7 @@ class VariableTypeCheck(_VariableTypeCheckBase):
     """
     short_name = "Variable data type: {var_id}"
     message_templates = ["The variable {var_id} was not of the required type: {dtype}"]
-
-    def _setup(self):
-        "Checks that required args are provided"
-        req_args = ("var_id", "dtype")
-        self._check_kwargs(req_args)
+    required_parameters = {"var_id": str, "dtype": str}
 
     def _get_result(self, primary_arg):
         ds = primary_arg
@@ -303,11 +277,7 @@ class MainVariableTypeCheck(_VariableTypeCheckBase):
     """
     short_name = "Main variable data type"
     message_templates = ["Main variable was not of the required type: {dtype}"]
-
-    def _setup(self):
-        "Checks that required args are provided"
-        req_args = ("dtype",)
-        self._check_kwargs(req_args)
+    required_parameters = {"dtype": str}
 
     def _get_result(self, primary_arg):
         ds = primary_arg
@@ -324,13 +294,8 @@ class NCVariableMetadataCheck(NCFileCheckBase):
     defaults = {}
     message_templates = ["Variable '{var_id}' not found in the file so cannot perform other checks.",
                          "Each variable attribute is checked separately."]
-
     level = "HIGH"
-
-    def _setup(self):
-        "Checks that the variable ID (var_id) argument has been provided."
-        if "var_id" not in self.kwargs:
-            raise ParameterError("Keyword argument for NC Variable Metadata Check must be: 'var_id'.")
+    required_parameters = {"var_id": str}
 
     def _check_nc_attribute(self, variable, attr, expected_value):
         """
@@ -404,14 +369,8 @@ class NetCDFFormatCheck(NCFileCheckBase):
     short_name = "NetCDF sub-format: {format}"
     defaults = {}
     message_templates = ["The NetCDF sub-format must be: {format}."]
-
     level = "HIGH"
-
-    def _setup(self):
-        "Checks that the `format` argument has been provided."
-        if "format" not in self.kwargs:
-            raise ParameterError("Keyword argument 'format' is required for NetCDF Format Check.")
-
+    required_parameters = {"format": str}
 
     def _get_result(self, primary_arg):
         ds = primary_arg
