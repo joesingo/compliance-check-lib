@@ -15,7 +15,7 @@ class ParameterisableCheckBase(object):
     level = "HIGH"
     supported_ds = [Dataset]
 
-    def __init__(self, kwargs, messages=None, level=None):
+    def __init__(self, kwargs, messages=None, level=None, **extra_kwargs):
         self.kwargs = self.defaults.copy()
         self.kwargs.update(kwargs)
 

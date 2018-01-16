@@ -5,29 +5,30 @@ test_file_checks.py
 Unit tests for the contents of the checklib.register.file_checks_register module.
 
 """
-
 import re
+
+from compliance_checker.base import GenericFile
 from checklib.register.file_checks_register import *
 
 
 def test_FileSizeCheck_soft_fail():
     x = FileSizeCheck(kwargs={"threshold": 1e-15, "severity": "soft"})
-    resp = x('README.md')
+    resp = x.do_check(GenericFile("README.md"))
     assert(resp.value == (0, 1))
 
 def test_FileSizeCheck_soft_success():
     x = FileSizeCheck(kwargs={"severity": "soft"})
-    resp = x('README.md')
+    resp = x.do_check(GenericFile("README.md"))
     assert(resp.value == (1, 1))
 
 def test_FileSizeCheck_hard_fail():
     x = FileSizeCheck(kwargs={"threshold": 1e-15, "severity": "hard"})
-    resp = x('README.md')
+    resp = x.do_check(GenericFile("README.md"))
     assert(resp.value == (0, 1))
 
 def test_FileSizeCheck_hard_success():
     x = FileSizeCheck(kwargs={"threshold": 4, "severity": "hard"})
-    resp = x('README.md')
+    resp = x.do_check(GenericFile("README.md"))
     assert(resp.value == (1, 1))
 
 def test_FileNameStructureCheck_regex():
@@ -41,7 +42,6 @@ def test_FileNameStructureCheck_regex():
         assert(hasattr(match, "groups"))
         assert(match != None)
 
-
 def test_FileNameStructureCheck_success():
     good = [
         ("checklib/test/example_data/file_checks_data/good_file.nc", {}),
@@ -53,7 +53,7 @@ def test_FileNameStructureCheck_success():
 
     for fpath, kwargs in good:
         x = FileNameStructureCheck(kwargs)
-        resp = x(fpath)
+        resp = x.do_check(GenericFile(fpath))
         assert(resp.value == (1, 1))
 
 def test_FileNameStructureCheck_fail_1():
@@ -64,6 +64,5 @@ def test_FileNameStructureCheck_fail_1():
     ]
     for fpath, kwargs in bad:
         x = FileNameStructureCheck(kwargs)
-        resp = x(fpath)
+        resp = x.do_check(GenericFile(fpath))
         assert(resp.value == (0, 1))
-

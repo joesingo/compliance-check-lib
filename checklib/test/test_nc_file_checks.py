@@ -36,90 +36,90 @@ def test_required_args_argument_fail_2():
 
 def test_GlobalAttrRegexCheck_success_1():
     x = GlobalAttrRegexCheck(kwargs={"attribute": "Conventions", "regex": "CF-\d+\.\d+"})
-    resp = x(Dataset('checklib/test/example_data/nc_file_checks_data/simple_nc.nc'))
+    resp = x.do_check(Dataset('checklib/test/example_data/nc_file_checks_data/simple_nc.nc'))
     assert(resp.value == (2, 2))
 
 
 def test_GlobalAttrRegexCheck_success_2():
     x = GlobalAttrRegexCheck(kwargs={"attribute": "source", "regex": ".{4,}"})
-    resp = x(Dataset('checklib/test/example_data/tasAnom_rcp85_land-prob_uk_25km_cdf_mon_20001201-20011130.nc'))
+    resp = x.do_check(Dataset('checklib/test/example_data/tasAnom_rcp85_land-prob_uk_25km_cdf_mon_20001201-20011130.nc'))
     assert (resp.value == (2, 2))
 
 
 def test_GlobalAttrRegexCheck_success_3():
     x = GlobalAttrRegexCheck(kwargs={"attribute": "project_id", "regex": "EUSTACE"})
-    resp = x(Dataset('checklib/test/example_data/nc_file_checks_data/simple_nc.nc'))
+    resp = x.do_check(Dataset('checklib/test/example_data/nc_file_checks_data/simple_nc.nc'))
     assert (resp.value == (2, 2))
 
 
 def test_GlobalAttrRegexCheck_success_4():
     x = GlobalAttrRegexCheck(kwargs={"attribute": "contact", "regex": ".{4,}"})
-    resp = x(Dataset('checklib/test/example_data/nc_file_checks_data/simple_nc.nc'))
+    resp = x.do_check(Dataset('checklib/test/example_data/nc_file_checks_data/simple_nc.nc'))
     assert (resp.value == (2, 2))
 
 
 def test_GlobalAttrRegexCheck_success_5():
     x = GlobalAttrRegexCheck(kwargs={"attribute": "creator_email", "regex": ".+@.+\..+"})
-    resp = x(Dataset('checklib/test/example_data/nc_file_checks_data/simple_nc.nc'))
+    resp = x.do_check(Dataset('checklib/test/example_data/nc_file_checks_data/simple_nc.nc'))
     assert (resp.value == (2, 2))
 
 
 def test_GlobalAttrRegexCheck_success_6():
     x = GlobalAttrRegexCheck(kwargs={"attribute": "creation_date", "regex": "\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.*"})
-    resp = x(Dataset('checklib/test/example_data/nc_file_checks_data/simple_nc.nc'))
+    resp = x.do_check(Dataset('checklib/test/example_data/nc_file_checks_data/simple_nc.nc'))
     assert (resp.value == (2, 2))
 
 
 def test_GlobalAttrRegexCheck_fail_1():
     x = GlobalAttrRegexCheck(kwargs={"attribute": "sausages", "regex": "CF-\d+\.\d+"})
-    resp = x(Dataset('checklib/test/example_data/nc_file_checks_data/simple_nc.nc'))
+    resp = x.do_check(Dataset('checklib/test/example_data/nc_file_checks_data/simple_nc.nc'))
     assert(resp.value == (0, 2))
     assert(resp.msgs[0] == "Required 'sausages' global attribute is not present.")
 
 
 def test_GlobalAttrRegexCheck_fail_2():
     x = GlobalAttrRegexCheck(kwargs={"attribute": "Conventions", "regex": "garbage - CF-\d+\.\d+"})
-    resp = x(Dataset('checklib/test/example_data/nc_file_checks_data/simple_nc.nc'))
+    resp = x.do_check(Dataset('checklib/test/example_data/nc_file_checks_data/simple_nc.nc'))
     assert(resp.value == (1, 2))
 
 
 def test_GlobalAttrVocabCheck_success_1():
     x = GlobalAttrVocabCheck(kwargs={"attribute": "frequency", "vocab_lookup": "canonical_name"},
                              vocabulary_ref="eustace-team:eustace:frequency")
-    resp = x(Dataset('checklib/test/example_data/nc_file_checks_data/simple_nc.nc'))
+    resp = x.do_check(Dataset('checklib/test/example_data/nc_file_checks_data/simple_nc.nc'))
     assert (resp.value == (2, 2))
 
 
 def test_GlobalAttrVocabCheck_success_2():
     x = GlobalAttrVocabCheck(kwargs={"attribute": "institution_id", "vocab_lookup": "label"},
                              vocabulary_ref="eustace-team:eustace:institution_id")
-    resp = x(Dataset('checklib/test/example_data/nc_file_checks_data/simple_nc.nc'))
+    resp = x.do_check(Dataset('checklib/test/example_data/nc_file_checks_data/simple_nc.nc'))
     assert (resp.value == (2, 2))
 
 
 def test_GlobalAttrVocabCheck_success_3():
     x = GlobalAttrVocabCheck(kwargs={"attribute": "domain", "vocab_lookup": "canonical_name"},
                              vocabulary_ref="ukcp:ukcp18")
-    resp = x(Dataset('checklib/test/example_data/tasAnom_rcp85_land-prob_uk_25km_percentile_mon_20001201-20011130_good_pcs.nc'))
+    resp = x.do_check(Dataset('checklib/test/example_data/tasAnom_rcp85_land-prob_uk_25km_percentile_mon_20001201-20011130_good_pcs.nc'))
     assert (resp.value == (2, 2))
 
 
 def test_GlobalAttrVocabCheck_fail_1():
     x = GlobalAttrVocabCheck(kwargs={"attribute": "frequency", "vocab_lookup": "canonical_name"},
                              vocabulary_ref="eustace-team:eustace")
-    resp = x(Dataset('checklib/test/example_data/nc_file_checks_data/two_vars_nc.nc'))
+    resp = x.do_check(Dataset('checklib/test/example_data/nc_file_checks_data/two_vars_nc.nc'))
     assert (resp.value == (1, 2))
 
 
 def test_OneMainVariablePerFileCheck_success():
     x = OneMainVariablePerFileCheck(kwargs={})
-    resp = x(Dataset('checklib/test/example_data/nc_file_checks_data/simple_nc.nc'))
+    resp = x.do_check(Dataset('checklib/test/example_data/nc_file_checks_data/simple_nc.nc'))
     assert(resp.value == (1, 1))
 
 
 def test_OneMainVariablePerFileCheck_fail():
     x = OneMainVariablePerFileCheck(kwargs={})
-    resp = x(Dataset('checklib/test/example_data/nc_file_checks_data/two_vars_nc.nc'))
+    resp = x.do_check(Dataset('checklib/test/example_data/nc_file_checks_data/two_vars_nc.nc'))
     assert(resp.value == (0, 1))
 
 
@@ -131,7 +131,7 @@ def test_ValidGlobalAttrsMatchFileNameCheck_success_1():
                                            vocabulary_ref="eustace-team:eustace")
     ds = Dataset(
         'checklib/test/example_data/nc_file_checks_data/MOHC_ocean_day.nc')
-    resp = x(ds)
+    resp = x.do_check(ds)
     assert(resp.value == (10, 10)), resp.msgs
 
 
@@ -141,7 +141,7 @@ def test_ValidGlobalAttrsMatchFileNameCheck_success_2():
                                                    "order": "frequency"},
                                            vocabulary_ref="ukcp:ukcp18")
     ds = Dataset('checklib/test/example_data/nc_file_checks_data/day.nc')
-    resp = x(ds)
+    resp = x.do_check(ds)
     assert(resp.value == (4, 4)), resp.msgs
 
 
@@ -151,7 +151,7 @@ def test_ValidGlobalAttrsMatchFileNameCheck_success_3():
                                                    "order": "scenario"},
                                            vocabulary_ref="ukcp:ukcp18")
     ds = Dataset('checklib/test/example_data/nc_file_checks_data/sres-a1b.nc')
-    resp = x(ds)
+    resp = x.do_check(ds)
     assert(resp.value == (4, 4)), resp.msgs
 
 
@@ -161,7 +161,7 @@ def test_ValidGlobalAttrsMatchFileNameCheck_success_4():
                                                    "order": "frequency"},
                                            vocabulary_ref="ukcp:ukcp18")
     ds = Dataset('checklib/test/example_data/nc_file_checks_data/day.nc')
-    resp = x(ds)
+    resp = x.do_check(ds)
     assert(resp.value == (4, 4)), resp.msgs
 
 
@@ -172,7 +172,7 @@ def test_ValidGlobalAttrsMatchFileNameCheck_success_5():
                                            vocabulary_ref="ukcp:ukcp18")
     ds = Dataset(
         'checklib/test/example_data/nc_file_checks_data/19981201-19991131.nc')
-    resp = x(ds)
+    resp = x.do_check(ds)
     assert(resp.value == (2, 2)), resp.msgs
 
 
@@ -182,7 +182,7 @@ def test_ValidGlobalAttrsMatchFileNameCheck_success_6():
                                                    "order": "scenario~dataset_id~prob_data_type~frequency~regex:^(?:\d{2}){2,6}(?:$|-(?:\d{2}){2,6}$)"},
                                            vocabulary_ref="ukcp:ukcp18")
     ds = Dataset('checklib/test/example_data/nc_file_checks_data/sres-a1b_ukcp18-land-prob-25km_sample_day_19981201-19991130.nc')
-    resp = x(ds)
+    resp = x.do_check(ds)
     assert(resp.value == (14, 14)), resp.msgs
 
 def test_ValidGlobalAttrsMatchFileNameCheck_success_7():
@@ -196,7 +196,7 @@ def test_ValidGlobalAttrsMatchFileNameCheck_success_7():
                                            vocabulary_ref="ukcp:ukcp18")
     ds = Dataset(
         'checklib/test/example_data/tasAnom_rcp85_land-prob_uk_25km_cdf_mon_20001201-20011130.nc')
-    resp = x(ds)
+    resp = x.do_check(ds)
     assert(resp.value == (23, 23)), resp.msgs
 
 def test_ValidGlobalAttrsMatchFileNameCheck_success_8():
@@ -214,7 +214,7 @@ def test_ValidGlobalAttrsMatchFileNameCheck_success_8():
                                            vocabulary_ref="ukcp:ukcp18")
     ds = Dataset(
         'checklib/test/example_data/tasAnom_rcp85_land-prob_uk_25km_cdf_mon_20001201-20011130.nc')
-    resp = x(ds)
+    resp = x.do_check(ds)
     assert(resp.value == (21, 21)), resp.msgs
 
 
@@ -230,7 +230,7 @@ def test_ValidGlobalAttrsMatchFileNameCheck_fail_1():
 
     ds = Dataset('checklib/test/example_data/nc_file_checks_data/day.nc')
     try:
-        x(ds)
+        x.do_check(ds)
     except AttributeError as exc:
         assert(str(exc) == "'NoneType' object has no attribute 'is_matched'")
 
@@ -244,7 +244,7 @@ def test_ValidGlobalAttrsMatchFileNameCheck_fail_2():
                                                    "order": "frequency"},
                                            vocabulary_ref="ukcp:ukcp18")
     ds = Dataset('checklib/test/example_data/nc_file_checks_data/duff.nc')
-    resp = x(ds)
+    resp = x.do_check(ds)
     assert(resp.value == (2, 4)), resp.msgs
 
 
@@ -256,7 +256,7 @@ def test_ValidGlobalAttrsMatchFileNameCheck_fail_3():
                                                    "order": "frequency~regex:\w"},
                                            vocabulary_ref="ukcp:ukcp18")
     ds = Dataset('checklib/test/example_data/nc_file_checks_data/day_duff1.nc')
-    resp = x(ds)
+    resp = x.do_check(ds)
     assert(resp.value == (4, 5)), resp.msgs
 
 
@@ -268,7 +268,7 @@ def test_ValidGlobalAttrsMatchFileNameCheck_fail_4():
                                                    "order": "frequency~regex:\w"},
                                            vocabulary_ref="ukcp:ukcp18")
     ds = Dataset('checklib/test/example_data/nc_file_checks_data/day_duff2.nc')
-    resp = x(ds)
+    resp = x.do_check(ds)
     assert(resp.value == (4, 5)), resp.msgs
 
 
@@ -279,7 +279,7 @@ def test_ValidGlobalAttrsMatchFileNameCheck_fail_5():
                                                    "order": "frequency~regex:\w"},
                                            vocabulary_ref="ukcp:ukcp18")
     ds = Dataset('checklib/test/example_data/nc_file_checks_data/day_duff3.nc')
-    resp = x(ds)
+    resp = x.do_check(ds)
     assert(resp.value == (3, 5)), resp.msgs
 
 # File name fragment 19981201-19991131 does not match regex ^(?:\\d{2}){2,3}(?:$|-(?:\\d{2}){2,6}$).
@@ -290,7 +290,7 @@ def test_ValidGlobalAttrsMatchFileNameCheck_fail_6():
                                            vocabulary_ref="ukcp:ukcp18")
     ds = Dataset(
         'checklib/test/example_data/nc_file_checks_data/19981201-19991131.nc')
-    resp = x(ds)
+    resp = x.do_check(ds)
     assert(resp.value == (1, 2)), resp.msgs
 
 
@@ -303,7 +303,7 @@ def test_ValidGlobalAttrsMatchFileNameCheck_fail_7():
                                            vocabulary_ref="ukcp:ukcp18")
     ds = Dataset(
         'checklib/test/example_data/nc_file_checks_data/tas_sres-a1b_ukcp18-land-prob-25km_sample_day_19981201-19991130.nc')
-    resp = x(ds)
+    resp = x.do_check(ds)
     assert(resp.value == (16, 17)), resp.msgs
 
 
@@ -313,7 +313,7 @@ def test_ValidGlobalAttrsMatchFileNameCheck_fail_8():
                                                    "extension": ".nc",
                                                    "order": "regex:^(?:\d{2}){2,3}(?:$|-(?:\d{2}){2,6}$)"},
                                            vocabulary_ref="ukcp:ukcp18")
-    resp = x("missing.nc")
+    resp = x.do_check(GenericFile("missing.nc"))
     assert(resp.value == (0, 2)), resp.msgs
 
 
@@ -342,60 +342,60 @@ def test_ValidGlobalAttrsMatchFileNameCheck_fail_10():
 # MainVariableTypeCheck - SUCCESS
 def test_MainVariableTypeCheck_success_1():
     x = MainVariableTypeCheck(kwargs={"dtype": "float32"})
-    resp = x(Dataset('checklib/test/example_data/nc_file_checks_data/simple_nc.nc'))
+    resp = x.do_check(Dataset('checklib/test/example_data/nc_file_checks_data/simple_nc.nc'))
     assert(resp.value == (1, 1)), resp.msgs
 
 # Main variable is not the required type: float64
 def test_MainVariableTypeCheck_fail_1():
     x = MainVariableTypeCheck(kwargs={"dtype": "float64"})
-    resp = x(Dataset('checklib/test/example_data/nc_file_checks_data/simple_nc.nc'))
+    resp = x.do_check(Dataset('checklib/test/example_data/nc_file_checks_data/simple_nc.nc'))
     assert(resp.value == (0, 1)), resp.msgs
 
 
 # Variable Type check: success
 def test_VariableTypeCheck_success():
     x = VariableTypeCheck(kwargs={"var_id": "time", "dtype": "float64"})
-    resp = x(Dataset('checklib/test/example_data/nc_file_checks_data/simple_nc.nc'))
+    resp = x.do_check(Dataset('checklib/test/example_data/nc_file_checks_data/simple_nc.nc'))
     assert(resp.value == (1, 1)), resp.msgs
 
 # Variable Type check: failure
 def test_VariableTypeCheck_failure():
     x = VariableTypeCheck(kwargs={"var_id": "time", "dtype": "int"})
-    resp = x(Dataset('checklib/test/example_data/nc_file_checks_data/simple_nc.nc'))
+    resp = x.do_check(Dataset('checklib/test/example_data/nc_file_checks_data/simple_nc.nc'))
     assert(resp.value == (0, 1)), resp.msgs
 
 # Check variable exists in NetCDF file - SUCCESS
 def test_VariableExistsInFileCheck_success():
     x = VariableExistsInFileCheck(kwargs={"var_id": "lon"})
-    resp = x(Dataset('checklib/test/example_data/nc_file_checks_data/simple_nc.nc'))
+    resp = x.do_check(Dataset('checklib/test/example_data/nc_file_checks_data/simple_nc.nc'))
     assert(resp.value == (1, 1)), resp.msgs
 
 
 # Check variable exists in NetCDF file - FAIL
 def test_VariableExistsInFileCheck_fail():
     x = VariableExistsInFileCheck(kwargs={"var_id": "lonGITUDEIO"})
-    resp = x(Dataset('checklib/test/example_data/nc_file_checks_data/simple_nc.nc'))
+    resp = x.do_check(Dataset('checklib/test/example_data/nc_file_checks_data/simple_nc.nc'))
     assert(resp.value == (0, 1)), resp.msgs
 
-     
+
 # Check variable is within valid bounds - SUCCESS
 def test_VariableRangeCheck_success():
     x = VariableRangeCheck(kwargs={"var_id": "tas", "minimum": 200, "maximum": 330.})
-    resp = x(Dataset('checklib/test/example_data/nc_file_checks_data/cmip5_example_1.nc'))
+    resp = x.do_check(Dataset('checklib/test/example_data/nc_file_checks_data/cmip5_example_1.nc'))
     assert(resp.value == (2, 2)), resp.msgs
 
 
 # Check variable is within valid bounds - FAIL (out of bounds)
 def test_VariableRangeCheck_fail_1():
     x = VariableRangeCheck(kwargs={"var_id": "tas", "minimum": 250, "maximum": 250.})
-    resp = x(Dataset('checklib/test/example_data/nc_file_checks_data/cmip5_example_1.nc'))
+    resp = x.do_check(Dataset('checklib/test/example_data/nc_file_checks_data/cmip5_example_1.nc'))
     assert(resp.value == (1, 2)), resp.msgs
 
 
 # Check variable is within valid bounds - FAIL (no variable in file)
 def test_VariableRangeCheck_fail_2():
     x = VariableRangeCheck(kwargs={"var_id": "tasTADOS", "minimum": 250, "maximum": 250.})
-    resp = x(Dataset('checklib/test/example_data/nc_file_checks_data/cmip5_example_1.nc'))
+    resp = x.do_check(Dataset('checklib/test/example_data/nc_file_checks_data/cmip5_example_1.nc'))
     assert(resp.value == (0, 2)), resp.msgs
 
 
@@ -403,7 +403,7 @@ def test_VariableRangeCheck_fail_2():
 def test_NCVariableMetadataCheck_partial_success_1():
     x = NCVariableMetadataCheck(kwargs={"var_id": "time", "pyessv_namespace": "common-land-variable"},
                                 vocabulary_ref="ncas:amf")
-    resp = x(Dataset('checklib/test/example_data/nc_file_checks_data/simple_nc.nc'))
+    resp = x.do_check(Dataset('checklib/test/example_data/nc_file_checks_data/simple_nc.nc'))
     assert(resp.value == (7, 17)), resp.msgs
 
 
@@ -411,7 +411,7 @@ def test_NCVariableMetadataCheck_success_1():
     x = NCVariableMetadataCheck(kwargs={"var_id": "time", "pyessv_namespace": "common-land-variable"},
                                 vocabulary_ref="ncas:amf")
     fpath = 'checklib/test/example_data/nc_file_checks_data/ncas-ceil-1_kumasi_20160701_backscatter_v1.2.nc'
-    resp = x(Dataset(fpath))
+    resp = x.do_check(Dataset(fpath))
     assert (resp.value == (9, 17)), resp.msgs
 
 
@@ -423,14 +423,27 @@ def test_NCVariableMetadataCheck_success_2():
                                                   "time_averaging", "time_step", "um_stash")},
                                 vocabulary_ref="ukcp:ukcp18")
     fpath = 'checklib/test/example_data/tasAnom_rcp85_land-prob_uk_25km_cdf_mon_20001201-20011130.nc'
-    resp = x(Dataset(fpath))
+    resp = x.do_check(Dataset(fpath))
     assert (resp.value == (8, 17)), resp.msgs
 
 
 def test_NCVariableMetadataCheck_fail_1():
     x = NCVariableMetadataCheck(kwargs={"var_id": "day", "pyessv_namespace": "common-land-variable"},
                                 vocabulary_ref="ncas:amf")
-    resp = x(Dataset('checklib/test/example_data/nc_file_checks_data/simple_nc.nc'))
+    resp = x.do_check(Dataset('checklib/test/example_data/nc_file_checks_data/simple_nc.nc'))
+    assert(resp.value == (0, 2)), resp.msgs
+
+
+def test_NCVariableMetadataCheck_success_1():
+    x = NCVariableMetadataCheck(kwargs={"var_id": "time"}, vocabulary_ref="ncas:amf")
+    fpath = 'checklib/test/example_data/nc_file_checks_data/ncas-amf/ncas-ceil-1_kumasi_20160701_backscatter_v1.2.nc'
+    resp = x.do_check(Dataset(fpath))
+    assert (resp.value == (15, 21)), resp.msgs
+
+
+def test_NCVariableMetadataCheck_fail_1():
+    x = NCVariableMetadataCheck(kwargs={"var_id": "day"}, vocabulary_ref="ncas:amf")
+    resp = x.do_check(Dataset('checklib/test/example_data/nc_file_checks_data/simple_nc.nc'))
     assert(resp.value == (0, 2)), resp.msgs
     assert(resp.msgs == ["Variable 'day' not found in the file so cannot perform other checks."])
 
@@ -439,7 +452,7 @@ def test_NCVariableMetadataCheck_fail_2():
     x = NCVariableMetadataCheck(kwargs={"var_id": "a-dog?", "pyessv_namespace": "common-land-dimension"},
                              vocabulary_ref="ncas:amf")
     try:
-        x(Dataset('checklib/test/example_data/nc_file_checks_data/simple_nc.nc'))
+        x.do_check(Dataset('checklib/test/example_data/nc_file_checks_data/simple_nc.nc'))
     except Exception, err:
         assert(str(err) == "Could not get value of term based on vocabulary lookup: 'common-land-dimension:a-dog?'.")
 
@@ -451,20 +464,20 @@ def test_NCMainVariableMetadataCheck_success_1():
                                                   "time_averaging", "time_step", "um_stash")},
                                 vocabulary_ref="ukcp:ukcp18")
     fpath = 'checklib/test/example_data/tasAnom_rcp85_land-prob_uk_25km_cdf_mon_20001201-20011130.nc'
-    resp = x(Dataset(fpath))
+    resp = x.do_check(Dataset(fpath))
     assert (resp.value == (8, 17)), resp.msgs
 
 
 def test_NetCDFFormatCheck_success():
     x = NetCDFFormatCheck(kwargs={"format": "NETCDF3_CLASSIC"})
     fpath = 'checklib/test/example_data/nc_file_checks_data/simple_nc.nc'
-    resp = x(Dataset(fpath))
+    resp = x.do_check(Dataset(fpath))
     assert (resp.value == (1, 1)), resp.msgs
 
 
 def test_NetCDFFormatCheck_fail():
     x = NetCDFFormatCheck(kwargs={"format": "NOTcdf"})
-    resp = x(Dataset('checklib/test/example_data/nc_file_checks_data/simple_nc.nc'))
+    resp = x.do_check(Dataset('checklib/test/example_data/nc_file_checks_data/simple_nc.nc'))
     assert(resp.value == (0, 1))
     assert(resp.msgs[0] == "The NetCDF sub-format must be: NOTcdf.")
 
@@ -473,7 +486,7 @@ def test_NetCDFDimensionCheck_success_1():
     ncfile = "checklib/test/example_data/nc_file_checks_data/amf_eg_data_1.nc"
     x = NetCDFDimensionCheck(kwargs={"dim_id": "latitude", "pyessv_namespace": "common-land-dimension"},
                              vocabulary_ref="ncas:amf")
-    resp = x(Dataset(ncfile))
+    resp = x.do_check(Dataset(ncfile))
     assert(resp.value == (5, 5))
 
 
@@ -482,7 +495,7 @@ def test_NetCDFDimensionCheck_fail():
     ncfile = "checklib/test/example_data/nc_file_checks_data/simple_nc.nc"
     x = NetCDFDimensionCheck(kwargs={"dim_id": "NO WAY", "pyessv_namespace": "common_land_dimension"},
                              vocabulary_ref="ncas:amf")
-    resp = x(Dataset(ncfile))
+    resp = x.do_check(Dataset(ncfile))
     assert(resp.value == (0, 3))
     assert(resp.msgs[0] == "Dimension not found: NO WAY.")
 
@@ -490,7 +503,7 @@ def test_NetCDFDimensionCheck_fail():
     ncfile = "checklib/test/example_data/nc_file_checks_data/amf_eg_data_bad.nc"
     x = NetCDFDimensionCheck(kwargs={"dim_id": "latitude", "pyessv_namespace": "common-land-dimension"},
                              vocabulary_ref="ncas:amf")
-    resp = x(Dataset(ncfile))
+    resp = x.do_check(Dataset(ncfile))
 
     assert(resp.value == (3, 5))
     assert(resp.msgs[0] == "Dimension 'latitude' does not have required length: 1.")
@@ -499,7 +512,7 @@ def test_NetCDFDimensionCheck_fail():
     ncfile = "checklib/test/example_data/nc_file_checks_data/amf_eg_data_bad.nc"
     x = NetCDFDimensionCheck(kwargs={"dim_id": "longitude", "pyessv_namespace": "common-land-dimension"},
                              vocabulary_ref="ncas:amf")
-    resp = x(Dataset(ncfile))
+    resp = x.do_check(Dataset(ncfile))
     assert(resp.value == (4, 5))
     assert(resp.msgs[0] == "Required variable attribute 'units' has incorrect value ('degree_east') "
            "for variable: 'longitude'. Value should be: 'degrees_east'.")
@@ -507,28 +520,28 @@ def test_NetCDFDimensionCheck_fail():
 def test_MainVariableAttributeCheck_success_1():
     ncfile = "checklib/test/example_data/nc_file_checks_data/simple_nc.nc"
     x = MainVariableAttributeCheck(kwargs={"attr_name": "long_name", "attr_value": "Seawater Temperature"})
-    resp = x(Dataset(ncfile))
+    resp = x.do_check(Dataset(ncfile))
     assert(resp.value == (3, 3))
 
 def test_MainVariableAttributeCheck_success_2():
     ncfile = "checklib/test/example_data/tasAnom_rcp85_land-prob_uk_25km_percentile_mon_20001201-20011130_good_pcs.nc"
     x = MainVariableAttributeCheck(kwargs={"attr_name": "_FillValue", "attr_value": 1e20})
-    resp = x(Dataset(ncfile))
+    resp = x.do_check(Dataset(ncfile))
     assert(resp.value == (3, 3))
 
 
 def test_MainVariableAttributeCheck_fail_1():
     ncfile = "checklib/test/example_data/nc_file_checks_data/two_vars_nc.nc"
     x = MainVariableAttributeCheck(kwargs={"attr_name": "long_name", "attr_value": "Seawater Temperature"})
-    resp = x(Dataset(ncfile))
+    resp = x.do_check(Dataset(ncfile))
     assert (resp.value == (0, 3))
 
     ncfile = "checklib/test/example_data/nc_file_checks_data/simple_nc.nc"
     x = MainVariableAttributeCheck(kwargs={"attr_name": "RUBBISH", "attr_value": "NONSENSE"})
-    resp = x(Dataset(ncfile))
+    resp = x.do_check(Dataset(ncfile))
     assert (resp.value == (1, 3))
 
     ncfile = "checklib/test/example_data/nc_file_checks_data/simple_nc.nc"
     x = MainVariableAttributeCheck(kwargs={"attr_name": "long_name", "attr_value": "NONSENSE"})
-    resp = x(Dataset(ncfile))
+    resp = x.do_check(Dataset(ncfile))
     assert (resp.value == (2, 3))
