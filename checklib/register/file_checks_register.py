@@ -7,6 +7,7 @@ A register of checks at the file-level.
 """
 
 import os, re
+import numbers
 
 from compliance_checker.base import Result, Dataset, GenericFile
 
@@ -33,7 +34,7 @@ class FileSizeCheck(FileCheckBase):
     defaults = {"threshold": 2, "strictness": "hard"}
     message_templates = ["Data file exceeds {strictness} limit of {threshold}Gbytes in size."]
     level = "HIGH"
-    required_parameters = {"threshold": float, "strictness": str}
+    required_parameters = {"threshold": numbers.Number, "strictness": str}
 
     def _get_result(self, primary_arg):
         fpath = primary_arg.filepath()

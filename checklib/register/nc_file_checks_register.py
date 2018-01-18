@@ -7,13 +7,14 @@ A register of checks for NetCDF4 files.
 """
 
 import os
+import numbers
 from netCDF4 import Dataset
 
 from compliance_checker.base import Result
 
 from .parameterisable_check_base import ParameterisableCheckBase
 from checklib.code import nc_util
-from checklib.cvs.ess_vocabs import ESSVocabs
+# from checklib.cvs.ess_vocabs import ESSVocabs
 from checklib.code.errors import FileError
 
 
@@ -213,7 +214,7 @@ class VariableRangeCheck(NCFileCheckBase):
                          "Variable {var_id} has values outside the permitted range: "
                          "{minimum} to {maximum}"]
     level = "HIGH"
-    required_parameters = {"var_id": str, "minimum": float, "maximum": float}
+    required_parameters = {"var_id": str, "minimum": numbers.Number, "maximum": numbers.Number}
 
     def _get_result(self, primary_arg):
         ds = primary_arg
