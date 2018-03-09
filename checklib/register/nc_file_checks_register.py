@@ -69,7 +69,7 @@ class GlobalAttrVocabCheck(NCFileCheckBase):
 
     def _get_result(self, primary_arg):
         ds = primary_arg
-        vocabs = ESSVocabs(*self.vocabulary_ref.split(":")[:2])
+        vocabs = ESSVocabs(*self.kwargs["vocabulary_ref"].split(":")[:2])
 
         score = vocabs.check_global_attribute(ds, self.kwargs["attribute"], property=self.kwargs["vocab_lookup"])
         messages = []
@@ -222,7 +222,7 @@ class ValidGlobalAttrsMatchFileNameCheck(NCFileCheckBase):
         score = 0
         messages = []
 
-        vocabs = ESSVocabs(*self.vocabulary_ref.split(":")[:2])
+        vocabs = ESSVocabs(*self.kwargs["vocabulary_ref"].split(":")[:2])
         fname = os.path.basename(ds.filepath())
 
         fn_score, msg = vocabs.check_file_name(fname, keys=self.kwargs["order"],
@@ -371,7 +371,7 @@ class _NCVariableMetadataCheckBase(NCFileCheckBase):
     message_templates = ["Variable '{var_id}' not found in the file so cannot perform other checks.",
                          "Each variable attribute is checked separately."]
     level = "HIGH"
-    required_parameters = {"var_id": str}
+    required_parameters = {"var_id": str, "pyessv_namespace": str}
 
     def _get_var_id(self, ds):
         raise NotImplementedError
@@ -379,6 +379,14 @@ class _NCVariableMetadataCheckBase(NCFileCheckBase):
 
     def _get_result(self, primary_arg):
         ds = primary_arg
+        var_id = self.kwargs["var_id"]
+
+        # First, work out the overall 'out of' value based on number of attributes
+        vocabs = ESSVocabs(*self.kwargs["vocabulary_ref"].split(":")[:2])
+        lookup = ":".join([self.kwargs["pyessv_namespace"], var_id])
+        expected_attr_dict = vocabs.get_value(lookup, "data")
+
+        self.out_of = 1 + len(expected_attr_dict) * 2
         score = 0
         var_id = self._get_var_id(ds)
 
@@ -389,7 +397,7 @@ class _NCVariableMetadataCheckBase(NCFileCheckBase):
                           self.get_short_name(), messages)
 
         # Work out the overall 'out of' value based on number of attributes
-        vocabs = ESSVocabs(*self.vocabulary_ref.split(":")[:2])
+        vocabs = ESSVocabs(*self.kwargs["vocabulary_ref"].split(":")[:2])
         lookup = ":".join([self.kwargs["pyessv_namespace"], var_id])
         expected_attr_dict = vocabs.get_value(lookup, "data")
 
@@ -549,7 +557,7 @@ class NetCDFDimensionCheck(NCFileCheckBase):
 
         # Now test coordinate variable using look-up in vocabularies
         # First, work out the overall 'out of' value based on number of attributes
-        vocabs = ESSVocabs(*self.vocabulary_ref.split(":")[:2])
+        vocabs = ESSVocabs(*self.kwargs["vocabulary_ref"].split(":")[:2])
         lookup = ":".join([self.kwargs["pyessv_namespace"], dim_id])
         expected_attr_dict = vocabs.get_value(lookup, "data")
 

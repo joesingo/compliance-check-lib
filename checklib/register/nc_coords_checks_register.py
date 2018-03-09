@@ -82,7 +82,7 @@ class NCCoordVarHasValuesInVocabCheck(NCFileCheckBase):
 
         score += 1
 
-        vocabs = ESSVocabs(*self.vocabulary_ref.split(":")[:2])
+        vocabs = ESSVocabs(*self.kwargs["vocabulary_ref"].split(":")[:2])
         expected_values = vocabs.get_value("coordinate:{}".format(var_id),
                                            "data")["value"]
 
@@ -129,7 +129,7 @@ class NCCoordVarHasLengthInVocabCheck(NCFileCheckBase):
 
         score += 1
 
-        vocabs = ESSVocabs(*self.vocabulary_ref.split(":")[:2])
+        vocabs = ESSVocabs(*self.kwargs["vocabulary_ref"].split(":")[:2])
         expected_length = vocabs.get_value("coordinate:{}".format(var_id),
                                            "data")["length"]
 

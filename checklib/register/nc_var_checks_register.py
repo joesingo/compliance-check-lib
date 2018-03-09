@@ -35,7 +35,7 @@ class NCArrayMatchesVocabTermsCheck(NCFileCheckBase):
         self.out_of = 1
         messages = []
 
-        vocabs = ESSVocabs(*self.vocabulary_ref.split(":")[:2])
+        vocabs = ESSVocabs(*self.kwargs["vocabulary_ref"].split(":")[:2])
 
         var_id = self.kwargs["var_id"]
         if var_id in ds.variables:
