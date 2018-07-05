@@ -14,7 +14,7 @@ from compliance_checker.base import Result
 
 from .parameterisable_check_base import ParameterisableCheckBase
 from checklib.code import nc_util
-# from checklib.cvs.ess_vocabs import ESSVocabs
+from checklib.cvs.ess_vocabs import ESSVocabs
 from checklib.code.errors import FileError
 
 

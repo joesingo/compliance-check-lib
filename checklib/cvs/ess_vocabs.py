@@ -16,7 +16,7 @@ import os, re
 from netCDF4 import Dataset
 
 # Check that ESSV directory exists, or give warning
-VOCABS_DIR = os.environ.get('PYESSV_ARCHIVE_HOME', os.path.expanduser('~/.esdoc/pyessv-archive')) 
+VOCABS_DIR = os.environ.get('PYESSV_ARCHIVE_HOME', os.path.expanduser('~/.esdoc/pyessv-archive'))
 
 if not os.path.isdir(VOCABS_DIR):
     import warnings
@@ -46,10 +46,10 @@ class ESSVocabs(object):
     authority = None
     scope = None
 
-    
+
     def __init__(self, authority, scope):
         """
-        Instantiates class by setting authority, scope and loading the CVs 
+        Instantiates class by setting authority, scope and loading the CVs
         from local cache.
         """
         self.authority = authority
@@ -71,7 +71,7 @@ class ESSVocabs(object):
 
         :attr   attribute name: string
         :full   boolean to say whether the attribute should be expressed
-                as a full path: default=False 
+                as a full path: default=False
                 If True: <authority>:<scope>:<attribute>
         :return: lookup value: string
         """
@@ -100,7 +100,7 @@ class ESSVocabs(object):
 
         # Fix term type: must be instance of pyessv._model.term.Term
         if not isinstance(term, pyessv._model.term.Term):
-              
+
             try:
                 # Use only the last 2 values (collection, item) to do the lookup
                 colln, item = term.split(":")[-2:]
@@ -122,7 +122,7 @@ class ESSVocabs(object):
     def check_global_attribute(self, ds, attr, property="label"):
         """
         Checks that global attribute `attr` is in allowed values (from CV).
-       
+
         :param ds: NetCDF4 Dataset object
         :param attr: string - name of attribtue to check.
         :param property: string property of CV term to check (defaults to 'label')
@@ -130,13 +130,13 @@ class ESSVocabs(object):
         """
         if not attr in ds.ncattrs():
             return 0
-           
-        nc_attr = ds.getncattr(attr) 
+
+        nc_attr = ds.getncattr(attr)
         allowed_values = [self.get_value(term, property) for term in self._cvs[self._get_lookup_id(attr)]]
 
         if nc_attr not in allowed_values:
             return 1
-            
+
         return 2
 
 
