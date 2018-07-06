@@ -63,29 +63,29 @@ def test_GlobalAttrRegexCheck_fail_2():
 
 
 def test_GlobalAttrVocabCheck_success_1():
-    x = GlobalAttrVocabCheck(kwargs={"attribute": "frequency", "vocab_lookup": "canonical_name"},
-                             vocabulary_ref="eustace-team:eustace:frequency")
+    x = GlobalAttrVocabCheck(kwargs={"attribute": "frequency", "vocab_lookup": "canonical_name",
+                                     "vocabulary_ref": "eustace-team:eustace:frequency"})
     resp = x.do_check(Dataset('checklib/test/example_data/nc_file_checks_data/simple_nc.nc'))
     assert (resp.value == (2, 2))
 
 
 def test_GlobalAttrVocabCheck_success_2():
-    x = GlobalAttrVocabCheck(kwargs={"attribute": "institution_id", "vocab_lookup": "label"},
-                             vocabulary_ref="eustace-team:eustace:institution_id")
+    x = GlobalAttrVocabCheck(kwargs={"attribute": "institution_id", "vocab_lookup": "label",
+                                     "vocabulary_ref": "eustace-team:eustace:institution_id"})
     resp = x.do_check(Dataset('checklib/test/example_data/nc_file_checks_data/simple_nc.nc'))
     assert (resp.value == (2, 2))
 
 
 def test_GlobalAttrVocabCheck_success_3():
-    x = GlobalAttrVocabCheck(kwargs={"attribute": "domain", "vocab_lookup": "canonical_name"},
-                             vocabulary_ref="ukcp:ukcp18")
+    x = GlobalAttrVocabCheck(kwargs={"attribute": "domain", "vocab_lookup": "canonical_name",
+                                     "vocabulary_ref": "ukcp:ukcp18"})
     resp = x.do_check(Dataset('checklib/test/example_data/tasAnom_rcp85_land-prob_uk_25km_percentile_mon_20001201-20011130_good_pcs.nc'))
     assert (resp.value == (2, 2))
 
 
 def test_GlobalAttrVocabCheck_fail_1():
-    x = GlobalAttrVocabCheck(kwargs={"attribute": "frequency", "vocab_lookup": "canonical_name"},
-                             vocabulary_ref="eustace-team:eustace")
+    x = GlobalAttrVocabCheck(kwargs={"attribute": "frequency", "vocab_lookup": "canonical_name",
+                                     "vocabulary_ref": "eustace-team:eustace"})
     resp = x.do_check(Dataset('checklib/test/example_data/nc_file_checks_data/two_vars_nc.nc'))
     assert (resp.value == (1, 2))
 
@@ -106,8 +106,8 @@ def test_OneMainVariablePerFileCheck_fail():
 def test_ValidGlobalAttrsMatchFileNameCheck_success_1():
     x = ValidGlobalAttrsMatchFileNameCheck(kwargs={"delimiter": "_",
                                                    "extension": ".nc",
-                                                   "order": "institution_id~realm~frequency"},
-                                           vocabulary_ref="eustace-team:eustace")
+                                                   "order": "institution_id~realm~frequency",
+                                                   "vocabulary_ref": "eustace-team:eustace"})
     ds = Dataset(
         'checklib/test/example_data/nc_file_checks_data/MOHC_ocean_day.nc')
     resp = x.do_check(ds)
@@ -117,8 +117,8 @@ def test_ValidGlobalAttrsMatchFileNameCheck_success_1():
 def test_ValidGlobalAttrsMatchFileNameCheck_success_2():
     x = ValidGlobalAttrsMatchFileNameCheck(kwargs={"delimiter": "_",
                                                    "extension": ".nc",
-                                                   "order": "frequency"},
-                                           vocabulary_ref="ukcp:ukcp18")
+                                                   "order": "frequency",
+                                                   "vocabulary_ref": "ukcp:ukcp18"})
     ds = Dataset('checklib/test/example_data/nc_file_checks_data/day.nc')
     resp = x.do_check(ds)
     assert(resp.value == (4, 4)), resp.msgs
@@ -127,8 +127,8 @@ def test_ValidGlobalAttrsMatchFileNameCheck_success_2():
 def test_ValidGlobalAttrsMatchFileNameCheck_success_3():
     x = ValidGlobalAttrsMatchFileNameCheck(kwargs={"delimiter": "_",
                                                    "extension": ".nc",
-                                                   "order": "scenario"},
-                                           vocabulary_ref="ukcp:ukcp18")
+                                                   "order": "scenario",
+                                                   "vocabulary_ref": "ukcp:ukcp18"})
     ds = Dataset('checklib/test/example_data/nc_file_checks_data/sres-a1b.nc')
     resp = x.do_check(ds)
     assert(resp.value == (4, 4)), resp.msgs
@@ -137,8 +137,8 @@ def test_ValidGlobalAttrsMatchFileNameCheck_success_3():
 def test_ValidGlobalAttrsMatchFileNameCheck_success_4():
     x = ValidGlobalAttrsMatchFileNameCheck(kwargs={"delimiter": "_",
                                                    "extension": ".nc",
-                                                   "order": "frequency"},
-                                           vocabulary_ref="ukcp:ukcp18")
+                                                   "order": "frequency",
+                                                   "vocabulary_ref": "ukcp:ukcp18"})
     ds = Dataset('checklib/test/example_data/nc_file_checks_data/day.nc')
     resp = x.do_check(ds)
     assert(resp.value == (4, 4)), resp.msgs
@@ -147,8 +147,8 @@ def test_ValidGlobalAttrsMatchFileNameCheck_success_4():
 def test_ValidGlobalAttrsMatchFileNameCheck_success_5():
     x = ValidGlobalAttrsMatchFileNameCheck(kwargs={"delimiter": "_",
                                                    "extension": ".nc",
-                                                   "order": "regex:^(?:\d{2}){2,6}(?:$|-(?:\d{2}){2,6}$)"},
-                                           vocabulary_ref="ukcp:ukcp18")
+                                                   "order": "regex:^(?:\d{2}){2,6}(?:$|-(?:\d{2}){2,6}$)",
+                                                   "vocabulary_ref": "ukcp:ukcp18"})
     ds = Dataset(
         'checklib/test/example_data/nc_file_checks_data/19981201-19991131.nc')
     resp = x.do_check(ds)
@@ -158,8 +158,8 @@ def test_ValidGlobalAttrsMatchFileNameCheck_success_5():
 def test_ValidGlobalAttrsMatchFileNameCheck_success_6():
     x = ValidGlobalAttrsMatchFileNameCheck(kwargs={"delimiter": "_",
                                                    "extension": ".nc",
-                                                   "order": "scenario~dataset_id~prob_data_type~frequency~regex:^(?:\d{2}){2,6}(?:$|-(?:\d{2}){2,6}$)"},
-                                           vocabulary_ref="ukcp:ukcp18")
+                                                   "order": "scenario~dataset_id~prob_data_type~frequency~regex:^(?:\d{2}){2,6}(?:$|-(?:\d{2}){2,6}$)",
+                                                   "vocabulary_ref": "ukcp:ukcp18"})
     ds = Dataset('checklib/test/example_data/nc_file_checks_data/sres-a1b_ukcp18-land-prob-25km_sample_day_19981201-19991130.nc')
     resp = x.do_check(ds)
     assert(resp.value == (14, 14)), resp.msgs
@@ -171,8 +171,8 @@ def test_ValidGlobalAttrsMatchFileNameCheck_success_7():
 
     x = ValidGlobalAttrsMatchFileNameCheck(kwargs={"delimiter": "_",
                                                    "extension": ".nc",
-                                                   "order": fn_order},
-                                           vocabulary_ref="ukcp:ukcp18")
+                                                   "order": fn_order,
+                                                   "vocabulary_ref": "ukcp:ukcp18"})
     ds = Dataset(
         'checklib/test/example_data/tasAnom_rcp85_land-prob_uk_25km_cdf_mon_20001201-20011130.nc')
     resp = x.do_check(ds)
@@ -189,8 +189,8 @@ def test_ValidGlobalAttrsMatchFileNameCheck_success_8():
     x = ValidGlobalAttrsMatchFileNameCheck(kwargs={"delimiter": "_",
                                                    "extension": ".nc",
                                                    "order": fn_order,
-                                                   "ignore_attr_checks": ["variable"]},
-                                           vocabulary_ref="ukcp:ukcp18")
+                                                   "ignore_attr_checks": ["variable"],
+                                                   "vocabulary_ref": "ukcp:ukcp18"})
     ds = Dataset(
         'checklib/test/example_data/tasAnom_rcp85_land-prob_uk_25km_cdf_mon_20001201-20011130.nc')
     resp = x.do_check(ds)
@@ -204,8 +204,8 @@ def test_ValidGlobalAttrsMatchFileNameCheck_success_8():
 def test_ValidGlobalAttrsMatchFileNameCheck_fail_1():
     x = ValidGlobalAttrsMatchFileNameCheck(kwargs={"delimiter": "_",
                                                    "extension": ".nc",
-                                                   "order": "duff"},
-                                           vocabulary_ref="ukcp:ukcp18")
+                                                   "order": "duff",
+                                                   "vocabulary_ref": "ukcp:ukcp18"})
 
     ds = Dataset('checklib/test/example_data/nc_file_checks_data/day.nc')
     try:
@@ -220,8 +220,8 @@ def test_ValidGlobalAttrsMatchFileNameCheck_fail_1():
 def test_ValidGlobalAttrsMatchFileNameCheck_fail_2():
     x = ValidGlobalAttrsMatchFileNameCheck(kwargs={"delimiter": "_",
                                                    "extension": ".nc",
-                                                   "order": "frequency"},
-                                           vocabulary_ref="ukcp:ukcp18")
+                                                   "order": "frequency",
+                                                   "vocabulary_ref": "ukcp:ukcp18"})
     ds = Dataset('checklib/test/example_data/nc_file_checks_data/duff.nc')
     resp = x.do_check(ds)
     assert(resp.value == (2, 4)), resp.msgs
@@ -232,8 +232,8 @@ def test_ValidGlobalAttrsMatchFileNameCheck_fail_2():
 def test_ValidGlobalAttrsMatchFileNameCheck_fail_3():
     x = ValidGlobalAttrsMatchFileNameCheck(kwargs={"delimiter": "_",
                                                    "extension": ".nc",
-                                                   "order": "frequency~regex:\w"},
-                                           vocabulary_ref="ukcp:ukcp18")
+                                                   "order": "frequency~regex:\w",
+                                                   "vocabulary_ref": "ukcp:ukcp18"})
     ds = Dataset('checklib/test/example_data/nc_file_checks_data/day_duff1.nc')
     resp = x.do_check(ds)
     assert(resp.value == (4, 5)), resp.msgs
@@ -244,8 +244,8 @@ def test_ValidGlobalAttrsMatchFileNameCheck_fail_3():
 def test_ValidGlobalAttrsMatchFileNameCheck_fail_4():
     x = ValidGlobalAttrsMatchFileNameCheck(kwargs={"delimiter": "_",
                                                    "extension": ".nc",
-                                                   "order": "frequency~regex:\w"},
-                                           vocabulary_ref="ukcp:ukcp18")
+                                                   "order": "frequency~regex:\w",
+                                                   "vocabulary_ref": "ukcp:ukcp18"})
     ds = Dataset('checklib/test/example_data/nc_file_checks_data/day_duff2.nc')
     resp = x.do_check(ds)
     assert(resp.value == (4, 5)), resp.msgs
@@ -255,8 +255,8 @@ def test_ValidGlobalAttrsMatchFileNameCheck_fail_4():
 def test_ValidGlobalAttrsMatchFileNameCheck_fail_5():
     x = ValidGlobalAttrsMatchFileNameCheck(kwargs={"delimiter": "_",
                                                    "extension": ".nc",
-                                                   "order": "frequency~regex:\w"},
-                                           vocabulary_ref="ukcp:ukcp18")
+                                                   "order": "frequency~regex:\w",
+                                                   "vocabulary_ref": "ukcp:ukcp18"})
     ds = Dataset('checklib/test/example_data/nc_file_checks_data/day_duff3.nc')
     resp = x.do_check(ds)
     assert(resp.value == (3, 5)), resp.msgs
@@ -265,8 +265,8 @@ def test_ValidGlobalAttrsMatchFileNameCheck_fail_5():
 def test_ValidGlobalAttrsMatchFileNameCheck_fail_6():
     x = ValidGlobalAttrsMatchFileNameCheck(kwargs={"delimiter": "_",
                                                    "extension": ".nc",
-                                                   "order": "regex:^(?:\d{2}){2,3}(?:$|-(?:\d{2}){2,6}$)"},
-                                           vocabulary_ref="ukcp:ukcp18")
+                                                   "order": "regex:^(?:\d{2}){2,3}(?:$|-(?:\d{2}){2,6}$)",
+                                                   "vocabulary_ref": "ukcp:ukcp18"})
     ds = Dataset(
         'checklib/test/example_data/nc_file_checks_data/19981201-19991131.nc')
     resp = x.do_check(ds)
@@ -278,8 +278,8 @@ def test_ValidGlobalAttrsMatchFileNameCheck_fail_7():
     fn_order = "variable~scenario~dataset_id~prob_data_type~frequency~regex:^(?:\d{2}){2,6}(?:$|-(?:\d{2}){2,3}$)"
     x = ValidGlobalAttrsMatchFileNameCheck(kwargs={"delimiter": "_",
                                                    "extension": ".nc",
-                                                   "order": fn_order},
-                                           vocabulary_ref="ukcp:ukcp18")
+                                                   "order": fn_order,
+                                                   "vocabulary_ref": "ukcp:ukcp18"})
     ds = Dataset(
         'checklib/test/example_data/nc_file_checks_data/tas_sres-a1b_ukcp18-land-prob-25km_sample_day_19981201-19991130.nc')
     resp = x.do_check(ds)
@@ -290,8 +290,8 @@ def test_ValidGlobalAttrsMatchFileNameCheck_fail_7():
 def test_ValidGlobalAttrsMatchFileNameCheck_fail_8():
     x = ValidGlobalAttrsMatchFileNameCheck(kwargs={"delimiter": "_",
                                                    "extension": ".nc",
-                                                   "order": "regex:^(?:\d{2}){2,3}(?:$|-(?:\d{2}){2,6}$)"},
-                                           vocabulary_ref="ukcp:ukcp18")
+                                                   "order": "regex:^(?:\d{2}){2,3}(?:$|-(?:\d{2}){2,6}$)",
+                                                   "vocabulary_ref": "ukcp:ukcp18"})
     resp = x.do_check(GenericFile("missing.nc"))
     assert(resp.value == (0, 2)), resp.msgs
 
@@ -300,8 +300,8 @@ def test_ValidGlobalAttrsMatchFileNameCheck_fail_9():
     try:
         ValidGlobalAttrsMatchFileNameCheck(kwargs={"x": "_",
                                                    "xx": ".nc",
-                                                   "xxx": "regex:^(?:\d{2}){2,3}(?:$|-(?:\d{2}){2,6}$)"},
-                                           vocabulary_ref="ukcp:ukcp18")
+                                                   "xxx": "regex:^(?:\d{2}){2,3}(?:$|-(?:\d{2}){2,6}$)",
+                                                   "vocabulary_ref": "ukcp:ukcp18"})
     except Exception as ex:
         assert(type(ex) == ParameterError), 'Expecting ParameterError, but got {}'.format(type(ex))
     else:
@@ -313,8 +313,8 @@ def test_ValidGlobalAttrsMatchFileNameCheck_fail_10():
         x = ValidGlobalAttrsMatchFileNameCheck(kwargs={"delimiter": "_",
                                                    "extension": ".nc",
                                                    "order": "frequency~domain",
-                                                   "ignore_attr_checks": ["FOO"]},
-                                           vocabulary_ref="ukcp:ukcp18")
+                                                   "ignore_attr_checks": ["FOO"],
+                                                   "vocabulary_ref": "ukcp:ukcp18"})
     except ParameterError as exc:
         assert(str(exc) == "Invalid arguments: requested to ignore attribute not provided in 'order': FOO.")
 
@@ -380,15 +380,15 @@ def test_VariableRangeCheck_fail_2():
 
 
 def test_NCVariableMetadataCheck_partial_success_1():
-    x = NCVariableMetadataCheck(kwargs={"var_id": "time", "pyessv_namespace": "common-land-variable"},
-                                vocabulary_ref="ncas:amf")
+    x = NCVariableMetadataCheck(kwargs={"var_id": "time", "pyessv_namespace": "product-common-variable-land",
+                                        "vocabulary_ref": "ncas:amf"})
     resp = x.do_check(Dataset('checklib/test/example_data/nc_file_checks_data/simple_nc.nc'))
     assert(resp.value == (7, 17)), resp.msgs
 
 
 def test_NCVariableMetadataCheck_success_1():
-    x = NCVariableMetadataCheck(kwargs={"var_id": "time", "pyessv_namespace": "common-land-variable"},
-                                vocabulary_ref="ncas:amf")
+    x = NCVariableMetadataCheck(kwargs={"var_id": "time", "pyessv_namespace": "product-common-variable-land",
+                                        "vocabulary_ref": "ncas:amf"})
     fpath = 'checklib/test/example_data/nc_file_checks_data/ncas-ceil-1_kumasi_20160701_backscatter_v1.2.nc'
     resp = x.do_check(Dataset(fpath))
     assert (resp.value == (9, 17)), resp.msgs
@@ -399,49 +399,49 @@ def test_NCVariableMetadataCheck_success_2():
                                         "pyessv_namespace": "variable",
                                         "ignores": ("cmip6_cmor_tables_row_id", "cmip6_name",
                                                   "cmip6_standard_name", "notes", "strand",
-                                                  "time_averaging", "time_step", "um_stash")},
-                                vocabulary_ref="ukcp:ukcp18")
+                                                  "time_averaging", "time_step", "um_stash"),
+                                        "vocabulary_ref": "ukcp:ukcp18"})
     fpath = 'checklib/test/example_data/tasAnom_rcp85_land-prob_uk_25km_cdf_mon_20001201-20011130.nc'
     resp = x.do_check(Dataset(fpath))
     assert (resp.value == (8, 17)), resp.msgs
 
 
 def test_NCVariableMetadataCheck_fail_1():
-    x = NCVariableMetadataCheck(kwargs={"var_id": "day", "pyessv_namespace": "common-land-variable"},
-                                vocabulary_ref="ncas:amf")
+    x = NCVariableMetadataCheck(kwargs={"var_id": "day", "pyessv_namespace": "product-common-variable-land",
+                                        "vocabulary_ref": "ncas:amf"})
     resp = x.do_check(Dataset('checklib/test/example_data/nc_file_checks_data/simple_nc.nc'))
     assert(resp.value == (0, 2)), resp.msgs
 
 
 def test_NCVariableMetadataCheck_success_1():
-    x = NCVariableMetadataCheck(kwargs={"var_id": "time"}, vocabulary_ref="ncas:amf")
+    x = NCVariableMetadataCheck(kwargs={"var_id": "time", "vocabulary_ref": "ncas:amf"})
     fpath = 'checklib/test/example_data/nc_file_checks_data/ncas-amf/ncas-ceil-1_kumasi_20160701_backscatter_v1.2.nc'
     resp = x.do_check(Dataset(fpath))
     assert (resp.value == (15, 21)), resp.msgs
 
 
 def test_NCVariableMetadataCheck_fail_1():
-    x = NCVariableMetadataCheck(kwargs={"var_id": "day"}, vocabulary_ref="ncas:amf")
+    x = NCVariableMetadataCheck(kwargs={"var_id": "day", "vocabulary_ref": "ncas:amf"})
     resp = x.do_check(Dataset('checklib/test/example_data/nc_file_checks_data/simple_nc.nc'))
     assert(resp.value == (0, 2)), resp.msgs
     assert(resp.msgs == ["Variable 'day' not found in the file so cannot perform other checks."])
 
 
 def test_NCVariableMetadataCheck_fail_2():
-    x = NCVariableMetadataCheck(kwargs={"var_id": "a-dog?", "pyessv_namespace": "common-land-dimension"},
-                             vocabulary_ref="ncas:amf")
+    x = NCVariableMetadataCheck(kwargs={"var_id": "a-dog?", "pyessv_namespace": "product-common-dimension-land",
+                                        "vocabulary_ref": "ncas:amf"})
     try:
         x.do_check(Dataset('checklib/test/example_data/nc_file_checks_data/simple_nc.nc'))
     except Exception, err:
-        assert(str(err) == "Could not get value of term based on vocabulary lookup: 'common-land-dimension:a-dog?'.")
+        assert(str(err) == "Could not get value of term based on vocabulary lookup: 'product-common-dimension-land:a-dog?'.")
 
 
 def test_NCMainVariableMetadataCheck_success_1():
     x = NCMainVariableMetadataCheck(kwargs={"pyessv_namespace": "variable",
                                         "ignores": ("cmip6_cmor_tables_row_id", "cmip6_name",
                                                   "cmip6_standard_name", "notes", "strand",
-                                                  "time_averaging", "time_step", "um_stash")},
-                                vocabulary_ref="ukcp:ukcp18")
+                                                  "time_averaging", "time_step", "um_stash"),
+                                        "vocabulary_ref": "ukcp:ukcp18"})
     fpath = 'checklib/test/example_data/tasAnom_rcp85_land-prob_uk_25km_cdf_mon_20001201-20011130.nc'
     resp = x.do_check(Dataset(fpath))
     assert (resp.value == (8, 17)), resp.msgs
@@ -463,8 +463,8 @@ def test_NetCDFFormatCheck_fail():
 
 def test_NetCDFDimensionCheck_success_1():
     ncfile = "checklib/test/example_data/nc_file_checks_data/amf_eg_data_1.nc"
-    x = NetCDFDimensionCheck(kwargs={"dim_id": "latitude", "pyessv_namespace": "common-land-dimension"},
-                             vocabulary_ref="ncas:amf")
+    x = NetCDFDimensionCheck(kwargs={"dim_id": "latitude", "pyessv_namespace": "product-common-dimension-land",
+                                     "vocabulary_ref": "ncas:amf"})
     resp = x.do_check(Dataset(ncfile))
     assert(resp.value == (5, 5))
 
@@ -472,16 +472,16 @@ def test_NetCDFDimensionCheck_success_1():
 def test_NetCDFDimensionCheck_fail():
     # Test for no dimension
     ncfile = "checklib/test/example_data/nc_file_checks_data/simple_nc.nc"
-    x = NetCDFDimensionCheck(kwargs={"dim_id": "NO WAY", "pyessv_namespace": "common_land_dimension"},
-                             vocabulary_ref="ncas:amf")
+    x = NetCDFDimensionCheck(kwargs={"dim_id": "NO WAY", "pyessv_namespace": "common_land_dimension",
+                                     "vocabulary_ref": "ncas:amf"})
     resp = x.do_check(Dataset(ncfile))
     assert(resp.value == (0, 3))
     assert(resp.msgs[0] == "Dimension not found: NO WAY.")
 
     # Test for dimension is wrong length
     ncfile = "checklib/test/example_data/nc_file_checks_data/amf_eg_data_bad.nc"
-    x = NetCDFDimensionCheck(kwargs={"dim_id": "latitude", "pyessv_namespace": "common-land-dimension"},
-                             vocabulary_ref="ncas:amf")
+    x = NetCDFDimensionCheck(kwargs={"dim_id": "latitude", "pyessv_namespace": "product-common-dimension-land",
+                                     "vocabulary_ref": "ncas:amf"})
     resp = x.do_check(Dataset(ncfile))
 
     assert(resp.value == (3, 5))
@@ -489,8 +489,8 @@ def test_NetCDFDimensionCheck_fail():
 
     # Test for dimension has wrong properties
     ncfile = "checklib/test/example_data/nc_file_checks_data/amf_eg_data_bad.nc"
-    x = NetCDFDimensionCheck(kwargs={"dim_id": "longitude", "pyessv_namespace": "common-land-dimension"},
-                             vocabulary_ref="ncas:amf")
+    x = NetCDFDimensionCheck(kwargs={"dim_id": "longitude", "pyessv_namespace": "product-common-dimension-land",
+                                     "vocabulary_ref": "ncas:amf"})
     resp = x.do_check(Dataset(ncfile))
     assert(resp.value == (4, 5))
     assert(resp.msgs[0] == "Required variable attribute 'units' has incorrect value ('degree_east') "

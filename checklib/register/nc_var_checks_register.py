@@ -14,7 +14,6 @@ from compliance_checker.base import Result
 from .nc_file_checks_register import NCFileCheckBase
 from checklib.code import nc_util
 from checklib.cvs.ess_vocabs import ESSVocabs
-from checklib.code.errors import FileError, ParameterError
 
 
 class NCArrayMatchesVocabTermsCheck(NCFileCheckBase):

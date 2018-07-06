@@ -15,7 +15,7 @@ from compliance_checker.base import Result
 from .parameterisable_check_base import ParameterisableCheckBase
 from checklib.code import nc_util
 from checklib.cvs.ess_vocabs import ESSVocabs
-from checklib.code.errors import FileError
+from checklib.code.errors import FileError, ParameterError
 
 
 class NCFileCheckBase(ParameterisableCheckBase):
@@ -379,14 +379,6 @@ class _NCVariableMetadataCheckBase(NCFileCheckBase):
 
     def _get_result(self, primary_arg):
         ds = primary_arg
-        var_id = self.kwargs["var_id"]
-
-        # First, work out the overall 'out of' value based on number of attributes
-        vocabs = ESSVocabs(*self.kwargs["vocabulary_ref"].split(":")[:2])
-        lookup = ":".join([self.kwargs["pyessv_namespace"], var_id])
-        expected_attr_dict = vocabs.get_value(lookup, "data")
-
-        self.out_of = 1 + len(expected_attr_dict) * 2
         score = 0
         var_id = self._get_var_id(ds)
 
