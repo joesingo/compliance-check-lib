@@ -9,6 +9,8 @@ Unit tests for the contents of the checklib.register.nc_file_checks_register mod
 import pytest
 from netCDF4 import Dataset
 
+from compliance_checker.base import GenericFile
+
 from checklib.code.errors import ParameterError
 from checklib.register.nc_file_checks_register import *
 
@@ -414,8 +416,9 @@ def test_NCVariableMetadataCheck_fail_1():
 
 
 def test_NCVariableMetadataCheck_success_1():
-    x = NCVariableMetadataCheck(kwargs={"var_id": "time", "vocabulary_ref": "ncas:amf"})
-    fpath = 'checklib/test/example_data/nc_file_checks_data/ncas-amf/ncas-ceil-1_kumasi_20160701_backscatter_v1.2.nc'
+    x = NCVariableMetadataCheck(kwargs={"var_id": "time", "vocabulary_ref": "ncas:amf",
+                                        "pyessv_namespace": "product-common-variable-land"})
+    fpath = 'checklib/test/example_data/nc_file_checks_data/ncas-ceil-1_kumasi_20160701_backscatter_v1.2.nc'
     resp = x.do_check(Dataset(fpath))
     assert (resp.value == (15, 21)), resp.msgs
 
