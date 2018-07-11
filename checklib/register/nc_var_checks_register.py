@@ -23,7 +23,7 @@ class NCArrayMatchesVocabTermsCheck(NCFileCheckBase):
     in the vocabulary collection specified.
     """
     short_name = "Variable '{var_id}' array matches vocabulary: {pyessv_namespace}"
-    required_args = ["var_id", "pyessv_namespace"]
+    required_parameters = {"var_id": str, "pyessv_namespace": str}
     defaults = {}
     message_templates = ["Variable '{var_id}' array does not match vocabulary "
                          "collection: '{pyessv_namespace}'"]
@@ -35,7 +35,7 @@ class NCArrayMatchesVocabTermsCheck(NCFileCheckBase):
         self.out_of = 1
         messages = []
 
-        vocabs = ESSVocabs(*self.vocabulary_ref.split(":")[:2])
+        vocabs = ESSVocabs(*self.kwargs["vocabulary_ref"].split(":")[:2])
 
         var_id = self.kwargs["var_id"]
         if var_id in ds.variables:

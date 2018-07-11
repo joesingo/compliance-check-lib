@@ -1,55 +1,29 @@
-from compliance_checker.base import BaseCheck
-from compliance_checker.base import Result
+from compliance_checker.base import BaseCheck, Dataset, Result
 from checklib.code.errors import FileError, ParameterError
 
 
-class CallableCheckBase(object):
+class ParameterisableCheckBase(object):
 
     # Define empty values for required arguments
     short_name = ""
-    primary_arg_type = None
     defaults = {}
 
-    # NOTE: `required_args` only needs to include arguments that required but
-    #                       are NOT set in `defaults`
-    required_args = []
     message_templates = []
     level = "HIGH"
+    supported_ds = [Dataset]
 
-    def __init__(self, kwargs, messages=None, level="HIGH", vocabulary_ref=None):
+    def __init__(self, kwargs, messages=None, level=None, **extra_kwargs):
         self.kwargs = self.defaults.copy()
         self.kwargs.update(kwargs)
-
-        self._check_required_args()
-
         self._define_messages(messages)
         self.out_of = len(self.messages)
-        self.level = getattr(BaseCheck, level)
-        self.vocabulary_ref = vocabulary_ref
+        self.level = getattr(BaseCheck, level or self.level or "HIGH")
 
         self._setup()
 
     def _setup(self):
         "Child classes can override this to perform validation or modification of arguments."
         pass
-
-    def _check_required_args(self):
-        """
-        Checks required arguments exist else returns an exception.
-
-        :return:
-        """
-        missing_args = []
-
-        for arg in self.required_args:
-            if arg not in self.kwargs:
-                missing_args.append(arg)
-
-        if missing_args:
-            cls = self.__class__.__name__
-            raise ParameterError("Keyword arguments for '{}' must "
-                                 "contain: {}.".format(cls, str(missing_args)))
-
 
     def _define_messages(self, messages=None):
         if messages:
@@ -85,7 +59,7 @@ class CallableCheckBase(object):
         #       and SUCCESS is silent.
         return self.messages
 
-    def __call__(self, primary_arg):
+    def do_check(self, primary_arg):
         """
         Calls the check with primary arg and keyword args provided during instantiation.
 
@@ -103,4 +77,9 @@ class CallableCheckBase(object):
         raise NotImplementedError
 
     def _check_primary_arg(self, primary_arg):
-        raise NotImplementedError
+        """
+        Child classes can override this to validate arguments before running
+        the check
+        """
+        pass
+

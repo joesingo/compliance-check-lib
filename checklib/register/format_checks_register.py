@@ -27,12 +27,12 @@ class NCFileIsReadableCheck(FileCheckBase):
         from netCDF4 import Dataset
 
         try:
-            ds = Dataset(primary_arg)
+            ds = Dataset(primary_arg.filepath())
             assert(type(ds.variables) == OrderedDict)
             assert(type(ds.dimensions) == OrderedDict)
             assert(ds.file_format == self.kwargs['file_format'])
             success = True
-        except Exception, err:
+        except AssertionError, err:
             success = False
 
         messages = []
@@ -62,16 +62,17 @@ class NCFileSoftwareCheck(FileCheckBase):
         import cf
 
         score = 0
+        fpath = primary_arg.filepath()
 
         try:
-            cl = iris.load(primary_arg)
+            cl = iris.load(fpath)
             assert(type(cl) in (iris.cube.Cube, iris.cube.CubeList))
             score += 1
         except Exception, err:
             pass
 
         try:
-            fl = cf.read(primary_arg)
+            fl = cf.read(fpath)
             assert(type(fl) in (cf.field.Field, cf.field.FieldList))
             score += 1
         except Exception, err:

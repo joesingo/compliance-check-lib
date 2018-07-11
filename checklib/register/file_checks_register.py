@@ -8,18 +8,22 @@ A register of checks at the file-level.
 
 import os, re
 
-from compliance_checker.base import Result
+from compliance_checker.base import Result, Dataset, GenericFile
 
-from .callable_check_base import CallableCheckBase
+from .parameterisable_check_base import ParameterisableCheckBase
 
 from checklib.code import file_util
 
-class FileCheckBase(CallableCheckBase):
-    "Base class for all File Checks (that work on a file path."
+class FileCheckBase(ParameterisableCheckBase):
+    """
+    Base class for all File Checks (that work on a file path.)
+    """
+    supported_ds = [Dataset, GenericFile]
 
     def _check_primary_arg(self, primary_arg):
-        if not os.path.isfile(primary_arg):
-            raise Exception("File not found: {}".format(primary_arg))
+        fpath = primary_arg.filepath()
+        if not os.path.isfile(fpath):
+            raise Exception("File not found: {}".format(fpath))
 
 
 class FileSizeCheck(FileCheckBase):
@@ -32,7 +36,7 @@ class FileSizeCheck(FileCheckBase):
     level = "HIGH"
 
     def _get_result(self, primary_arg):
-        fpath = primary_arg
+        fpath = primary_arg.filepath()
         threshold = float(self.kwargs["threshold"])
 
         success = file_util._is_file_size_less_than(fpath, threshold * (2.**30))
